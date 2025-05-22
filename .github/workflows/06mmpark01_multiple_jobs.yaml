@@ -37,7 +37,7 @@ jobs:
           path: build/libs/*SNAPSHOT.jar
 
 
-  deploy:
+  deploy_and test:
     name: deploy
     needs: build
     runs-on: ubuntu-22.04
@@ -52,14 +52,14 @@ jobs:
 
       - name: run springboot aplication
         run: |
-          java  -jar  ./application.jar  &  || exit 1
+          java  -jar  ./application.jar  &    exit 1
           sleep 30  #   stand by 30 sec
 
-  test:
-    name: app test
-    needs: deploy
-    runs-on: ubuntu-22.04
-    steps:
+#  test:
+#    name: app test
+#    needs: deploy
+#    runs-on: ubuntu-22.04
+ #   steps:
       - name: run automated test #1
         run:  |
           curl http://localhost:8080    ||     exit   1
