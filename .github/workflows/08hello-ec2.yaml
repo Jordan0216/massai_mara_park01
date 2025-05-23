@@ -5,7 +5,7 @@ on:
 
 env:
   EC2_HOSTNAME: 3.36.133.115
-  Ec2_USERNAME: ubuntu
+  EC2_USERNAME: ubuntu
 
 jobs:
   test-ec2-connect:
@@ -30,7 +30,7 @@ jobs:
           ssh -vvv -o StrictHostKeyChecking=no \
             -o "UserKnownHostsFile=/dev/null" \
             -i ~/.ssh/ec2_key -p 12137 \
-            ${{env.EC2_USERNAME}}@${{env.EC2_HOSTNAME}} '
+            ${{env.EC2_USERNAME}}@${{env.EC2_HOSTNAME}} << 'EOP'
 
               echo "현재사용자: $(whoami)"
               echo "호스트명: $(hostname)"
@@ -50,7 +50,7 @@ jobs:
           -o StrictHostKeyChecking=no \
           -o "UserKnownHostsFile=/dev/null" \
           -P 12137 README.md \
-          ${{env.Ec2_USERNAME}}@${{env.EC2_HOSTNAME}}:~/
+          ${{env.EC2_USERNAME}}@${{env.EC2_HOSTNAME}}:~/
 
       - name: cleanup private key
         if: always()
