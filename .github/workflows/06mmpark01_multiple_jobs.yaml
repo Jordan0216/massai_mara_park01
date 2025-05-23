@@ -37,7 +37,7 @@ jobs:
           path: build/libs/*SNAPSHOT.jar
 
 
-  deploy:
+  deploy_and_test:
     name: deploy
     needs: build
     runs-on: ubuntu-22.04
