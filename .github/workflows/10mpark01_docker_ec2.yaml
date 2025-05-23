@@ -12,11 +12,14 @@ env:
 
 jobs:
   build_image:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-arm
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
+        
+      - name: setup QEM
+        uses: docker/setup-qemu-action@v3
+        
       - name: setup docker buildx
         uses: docker/setup-buildx-action@v3
 
@@ -25,6 +28,7 @@ jobs:
         with:
           context:  .
           file:  ./Dockerfile
+          platforms: linux/arm64
           push:  false
           load:  true
           tags:  ${{env.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
@@ -82,7 +86,7 @@ jobs:
 
   upload_compose:
     needs: hub_push
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-arm
     
     steps:
       - name: Checkout code
@@ -112,8 +116,8 @@ jobs:
           key: ${{ secrets.EC2_PRIVATEKEY}}
           port: 12137
           script: |
-            docker-compose -f ./compose-multijobs.yaml -d
+            docker compose -f ./compose-multijobs.yaml -d
             sleep 30
 
-            docker-compose ps
-            docker-compose logs
+            docker compose ps
+            docker compose logs
